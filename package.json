@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "electron": "electron .",
+    "build:exe": "ng build && electron-builder"
   },
   "prettier": {
     "overrides": [
@@ -27,13 +29,16 @@
     "@angular/platform-browser": "^20.1.0",
     "@angular/router": "^20.1.0",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "zone.js": "^0.15.1"
   },
   "devDependencies": {
     "@angular/build": "^20.1.1",
     "@angular/cli": "^20.1.1",
     "@angular/compiler-cli": "^20.1.0",
     "@types/jasmine": "~5.1.0",
+    "electron": "^39.2.7",
+    "electron-builder": "^26.0.12",
     "jasmine-core": "~5.8.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
@@ -41,5 +46,20 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.8.2"
+  },
+  "main": "electron.js",
+  "build": {
+    "appId": "com.love.mazegame",
+    "productName": "Maze Game",
+    "asar": false,        
+    "files": [
+      "electron.js",
+      "package.json",
+      "dist/maze-game/**/*" 
+    ],
+    "win": {
+      "target": "nsis",
+      "forceCodeSigning": false
+    }
   }
 }
