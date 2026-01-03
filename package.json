@@ -37,6 +37,7 @@
     "@angular/cli": "^20.1.1",
     "@angular/compiler-cli": "^20.1.0",
     "@types/jasmine": "~5.1.0",
+    "angular-cli-ghpages": "^2.0.3",
     "electron": "^39.2.7",
     "electron-builder": "^26.0.12",
     "jasmine-core": "~5.8.0",
@@ -51,11 +52,11 @@
   "build": {
     "appId": "com.love.mazegame",
     "productName": "Maze Game",
-    "asar": false,        
+    "asar": false,
     "files": [
       "electron.js",
       "package.json",
-      "dist/maze-game/**/*" 
+      "dist/maze-game/**/*"
     ],
     "win": {
       "target": "nsis",

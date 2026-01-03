@@ -89,6 +89,10 @@ export class AppComponent implements OnInit {
 
   emojiError = '';
 
+  // Letter animation
+  envelopeOpened = false;
+  letterVisible = false;
+
   ngOnInit() {}
 
   startGame() {
@@ -244,5 +248,12 @@ export class AppComponent implements OnInit {
 
   getCompletedCheckpointsCount(): number {
     return this.checkpoints.filter(cp => cp.completed).length;
+  }
+
+  openEnvelope() {
+    this.envelopeOpened = true;
+    setTimeout(() => {
+      this.letterVisible = true;
+    }, 600);
   }
 }

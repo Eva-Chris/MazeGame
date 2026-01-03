@@ -221,13 +221,31 @@
 
 <!-- Win Screen -->
 @if (currentScreen === 'win') {
-  <div class="screen">
-    <div id="win-screen">
-      <div class="heart">❤️</div>
-      <h1>Συγχαρητήρια! Με βρήκες!</h1>
-      <p>Χρόνια Πολλά αγάπη μου! Να χαίρεσαι το όνομά σου!</p>
-      <p>Ο κωδικός είναι 030425. Ξέρεις τι είναι αυτό; Η επέτείος μας οπότε φρόντισε να το θυμάσαι!</p>
-      <p class="message">Σ' ευχαριστώ που είσαι εσύ! Σ' αγαπώ!</p>
-    </div>
+  <div class="screen win-letter-screen">
+    <section class="cssletter">
+      <div class="envelope" [class.active]="envelopeOpened">
+        <button class="heart" (click)="openEnvelope()" aria-label="Open Envelope">
+          <span class="heart-text">Άνοιξε</span>
+        </button>
+        <div class="envelope-flap"></div>
+        <div class="envelope-folds">
+          <div class="envelope-left"></div>
+          <div class="envelope-right"></div>
+          <div class="envelope-bottom"></div>
+        </div>
+      </div>
+      
+      @if (letterVisible) {
+        <div class="letters">
+          <blockquote class="letter center">
+            <h2 style="margin-bottom: 1rem; color: #8B0000;">Συγχαρητήρια! Με βρήκες!</h2>
+            <p style="margin-bottom: 1rem;">Χρόνια Πολλά αγάπη μου! Να χαίρεσαι το όνομά σου!</p>
+            <p style="margin-bottom: 1rem; font-weight: bold;">Ο κωδικός είναι <span style="font-size: 1.5em; color: #8B0000;">030425</span></p>
+            <p style="margin-bottom: 1rem;">Ξέρεις τι είναι αυτό; Η επέτείος μας οπότε φρόντισε να το θυμάσαι!</p>
+            <cite style="margin-top: 1.5rem; font-size: 1.3em;">Σ' ευχαριστώ που είσαι εσύ! Σ' αγαπώ! ❤️</cite>
+          </blockquote>
+        </div>
+      }
+    </section>
   </div>
 }

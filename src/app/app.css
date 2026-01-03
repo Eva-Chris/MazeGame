@@ -1,3 +1,6 @@
+/* Letter Envelope Styles */
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -424,6 +427,258 @@ button {
   margin-bottom: 20px;
 }
 
+.win-letter-screen {
+  background: darkred !important;
+}
+
+.cssletter {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.envelope {
+  position: relative;
+  width: 300px;
+  height: 200px;
+  background: Moccasin;
+  box-shadow: inset 0 0 30px -5px Peru, 0 0 50vw 0 #540000;
+  z-index: 2;
+}
+
+@media (min-width: 650px) {
+  .envelope {
+    width: 600px;
+    height: 400px;
+  }
+}
+
+.envelope::before {
+  content: "˚ʚ❤︎ɞ˚";
+  font-size: 5rem;
+  color: white;
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: soft-light;
+}
+
+.envelope-flap {
+  width: 100%;
+  height: 71%;
+  position: absolute;
+  top: 0;
+  z-index: 5;
+  overflow: hidden;
+  transition: 0.6s linear all;
+  transform-origin: top;
+  pointer-events: all;
+}
+
+.envelope-folds {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 4;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.envelope-flap::before,
+.envelope-left::before,
+.envelope-right::before,
+.envelope-bottom::before {
+  content: "";
+  transform: rotate(45deg);
+  background: Moccasin;
+  box-shadow: 0 0 30px -5px Peru;
+  width: 100%;
+  aspect-ratio: 1;
+  display: block;
+  position: absolute;
+  top: 60%;
+}
+
+.envelope-flap::before {
+  border-radius: 5rem;
+  bottom: 30px;
+  top: auto;
+}
+
+@media (min-width: 650px) {
+  .envelope-flap::before {
+    bottom: 100px;
+  }
+}
+
+.envelope-left::before {
+  top: 10%;
+  left: -65%;
+}
+
+.envelope-right::before {
+  top: 10%;
+  right: -65%;
+}
+
+.envelope-bottom::before {
+  top: 60%;
+  border-radius: 5rem;
+}
+
+.cssletter .heart {
+  z-index: 6;
+  position: relative;
+  box-shadow: none;
+  border: none;
+  width: 70px;
+  aspect-ratio: 1;
+  background: radial-gradient(circle at 60% 65%, darkred 64%, #0000 65%) top left/50% 50%,
+    radial-gradient(circle at 40% 65%, darkred 64%, #0000 65%) top right/50% 50%,
+    conic-gradient(from -45deg at 50% 85.5%, darkred 90deg, #0000 0) bottom/100% 50%;
+  background-repeat: no-repeat;
+  left: 50%;
+  top: 70%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  animation: none;
+  font-size: 1rem;
+  margin: 0;
+}
+
+@media (min-width: 650px) {
+  .cssletter .heart {
+    width: 150px;
+  }
+}
+
+.cssletter .heart::before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 70px;
+  aspect-ratio: 1;
+  background: radial-gradient(circle at 60% 65%, #ffffff26 64%, #0000 65%) top left/50% 50%,
+    radial-gradient(circle at 40% 65%, #ffffff26 64%, #0000 65%) top right/50% 50%,
+    conic-gradient(from -45deg at 50% 85.5%, #ffffff26 90deg, #0000 0) bottom/100% 50%;
+  background-repeat: no-repeat;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: 0.3s ease all;
+  z-index: -1;
+}
+
+@media (min-width: 650px) {
+  .cssletter .heart::before {
+    width: 150px;
+  }
+}
+
+.cssletter .heart:hover,
+.cssletter .heart:active,
+.cssletter .heart:focus {
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+}
+
+.cssletter .heart:hover::before,
+.cssletter .heart:active::before,
+.cssletter .heart:focus::before {
+  transform: translate(-50%, -50%) scale(0.8);
+}
+
+.heart-text {
+  transform: translateY(-10px);
+  display: block;
+  color: white;
+  font-size: 1.5rem;
+  font-family: "Dancing Script", serif;
+}
+
+.envelope.active * {
+  pointer-events: none;
+}
+
+.envelope.active .envelope-flap {
+  transform: rotateX(-180deg) translateY(0);
+  perspective: 10px;
+}
+
+.envelope.active .envelope-flap::before {
+  box-shadow: inset 0 0 30px -5px Peru;
+}
+
+.envelope.active .cssletter .heart {
+  display: none;
+}
+
+.letters {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.letter {
+  box-sizing: border-box;
+  font-family: "Dancing Script", serif;
+  font-size: 1rem;
+  line-height: 1.3;
+  background-color: AntiqueWhite;
+  color: #180d07;
+  width: 250px;
+  height: calc(250px - 1rem - 10px);
+  user-select: none;
+  box-shadow: inset 0 0 20px -5px BurlyWood;
+  padding: 2rem 1rem 1rem;
+  margin: 0;
+  position: relative;
+  overflow: auto;
+  text-align: center;
+  border: 0;
+  animation: slideUpLetter 0.6s ease-out;
+  pointer-events: auto;
+}
+
+@media (min-width: 650px) {
+  .letter {
+    width: 500px;
+    height: calc(400px - 1rem - 10px);
+    font-size: 1.3rem;
+  }
+}
+
+.letter.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.letter cite {
+  font-size: 1.25rem;
+  color: #180d07;
+  margin-top: 1rem;
+}
+
+.letter cite::before {
+  content: none;
+}
+
 .date-input {
   appearance: none;
   -webkit-appearance: none;
@@ -481,7 +736,6 @@ button {
   border-radius: 8px;
   margin-top: 10px;
 }
-
 
 /* Timeline Styling */
 .timeline-grid {
@@ -585,5 +839,16 @@ button {
       0 0 25px rgba(255, 215, 0, 0.8),
       0 0 40px rgba(255, 215, 0, 0.4),
       inset 0 0 20px rgba(255, 215, 0, 0.5);
+  }
+}
+
+@keyframes slideUpLetter {
+  from {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
