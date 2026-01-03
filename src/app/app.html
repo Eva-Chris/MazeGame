@@ -33,7 +33,7 @@
         <p>Checkpoints που ολοκληρώθηκαν: {{ getCompletedCheckpointsCount() }}/{{ checkpoints.length }}</p>
       </div>
       
-      <div class="maze-container">
+      <div class="maze-container" #gameContainer tabindex="0">
         <!-- Maze Grid -->
         <div class="maze">
           @for (row of maze; track $index; let y = $index) {

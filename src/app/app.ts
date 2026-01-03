@@ -1,5 +1,5 @@
 // app.component.ts
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -23,6 +23,7 @@ interface Checkpoint {
   styleUrls: ['./app.css']
 })
 export class AppComponent implements OnInit {
+  @ViewChild('gameContainer') gameContainer!: ElementRef;
   currentScreen: 'intro' | 'game' | 'checkpoint' | 'win' = 'intro';
   
   // No button escape logic (starts next to Yes button)
@@ -238,6 +239,9 @@ export class AppComponent implements OnInit {
       this.currentCheckpoint.completed = true;
       this.currentCheckpoint = null;
       this.currentScreen = 'game';
+      setTimeout(() => {
+        this.gameContainer?.nativeElement.focus();
+      }, 10);
       this.birthdayAnswer = '';
       this.birthdayError = '';
       this.songAnswer = '';
