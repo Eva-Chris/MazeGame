@@ -115,6 +115,7 @@ button {
 #yes-btn {
   background: none;
   color: #ee2f2b;
+  border-color: #ee2f2b;
   border: 1px solid #ee2f2b;
 }
 

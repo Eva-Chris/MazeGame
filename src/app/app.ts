@@ -176,7 +176,7 @@ export class AppComponent implements OnInit {
     if (item === this.targetItem) {
       this.completeCheckpoint();
     } else {
-      this.findItemError = 'Όχι ακριβώς! Συνέχισε να ψάχνεις... 👀';
+      this.findItemError = 'Όχι ακριβώς! Συνέχισε να ψάχνεις...';
     }
   }
 
@@ -225,7 +225,7 @@ export class AppComponent implements OnInit {
     if (selectedEmoji === '😏') {
       this.completeCheckpoint();
     } else {
-      this.emojiError = 'Όχι, αυτό το αντέχω... Για σκέψου ποιο με εκνεύριζε πραγματικά!';
+      this.emojiError = 'Όχι, αυτό το αντέχεις νομίζω...';
     }
   }
 

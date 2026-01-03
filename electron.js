@@ -2,6 +2,18 @@ const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
 
+app.whenReady().then(() => {
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': ['*']
+      }
+    });
+  });
+  createWindow();
+});
+
 function createWindow() {
   const win = new BrowserWindow({
     width: 1000,
@@ -10,11 +22,13 @@ function createWindow() {
     fullscreen: false,
     autoHideMenuBar: true,
     webPreferences: {
-      contextIsolation: true,
       nodeIntegration: false,
-      webSecurity: false // Disable web security to allow loading local resources
-    }
+      contextIsolation: true,
+      webSecurity: false,
+    },
   });
+
+  win.webContents.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
 
   const startUrl = url.format({
     pathname: path.join(__dirname, 'dist/maze-game/browser/index.html'),
@@ -23,12 +37,6 @@ function createWindow() {
   });
 
   win.loadURL(startUrl);
-
-  win.webContents.openDevTools();
-
-  win.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
-    console.error('Failed to load page:', errorCode, errorDescription);
-  });
 }
 
 app.whenReady().then(createWindow);
