@@ -33,7 +33,7 @@
         <p>Checkpoints που ολοκληρώθηκαν: {{ getCompletedCheckpointsCount() }}/{{ checkpoints.length }}</p>
       </div>
       
-      <div class="maze-container" #gameContainer tabindex="0">
+      <div class="maze-container" #gameContainer tabindex="0" (click)="gameContainer.focus()">
         <!-- Maze Grid -->
         <div class="maze">
           @for (row of maze; track $index; let y = $index) {
@@ -111,23 +111,6 @@
         </div>
       }
       
-      <!-- Song Checkpoint -->
-      @if (currentCheckpoint?.type === 'song') {
-        <div>
-          <h2>Checkpoint: Ταινίες!</h2>
-          <p>Ποιο είναι το </p>
-          <input 
-            type="text" 
-            [(ngModel)]="songAnswer" 
-            placeholder="Τίτλος ταινίας..."
-            (keyup.enter)="checkSong()">
-          @if (songError) {
-            <p class="error">{{ songError }}</p>
-          }
-          <button (click)="checkSong()">Υποβολή</button>
-        </div>
-      }
-
       @if (currentCheckpoint?.type === 'proverbs') {
         <div class="checkpoint-modal proverbs-modal">
           <h2>Checkpoint: Οι παροιμίες σου</h2>
@@ -213,6 +196,32 @@
           </div>
 
           @if (emojiError) { <p class="error">{{ emojiError }}</p> }
+        </div>
+      }
+
+      @if (currentCheckpoint?.type === 'map-quiz') {
+        <div class="map-modal">
+          <h2>Πού ήταν το πρώτο μας ραντεβού;</h2>
+          <div id="map-id" style="height: 500px; width: 100%; margin-top: 15px;"></div>
+        </div>
+      }
+
+      @if (currentCheckpoint?.type === 'multi-quiz') {
+        <div class="checkpoint-modal quiz-modal">
+          <h2>Ερώτηση {{ currentQuestionIndex + 1 }} / {{ quizQuestions.length }}</h2>
+          <p class="quiz-question">{{ quizQuestions[currentQuestionIndex].q }}</p>
+          
+          <div class="quiz-options">
+            @for (option of quizQuestions[currentQuestionIndex].options; track $index) {
+              <button class="quiz-option-btn" (click)="handleQuizAnswer($index)">
+                {{ option }}
+              </button>
+            }
+          </div>
+          
+          <div class="quiz-progress-bar">
+            <div class="progress-fill" [style.width.%]="(currentQuestionIndex / quizQuestions.length) * 100"></div>
+          </div>
         </div>
       }
     </div>
