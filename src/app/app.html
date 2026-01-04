@@ -7,7 +7,7 @@
       <img src="present.gif" alt="Cute animation" class="intro-gif">
 
       <h1>Ένα παιχνίδι ειδικά για εσένα!</h1>
-      <p>Θέλεις να παίξεις;</p>
+      <p style="font-size: 20px;">Θέλεις να παίξεις;</p>
       
       <div class="button-container">
         <button id="yes-btn" (click)="startGame()">Ναι! Θέλω να παίξω</button>
@@ -29,7 +29,7 @@
     <div id="game-screen">
       <div class="game-info">
         <h2>Βρες με!</h2>
-        <p>Χρησιμοποίησε το WASD ή τα πλήκτρα βέλους για να κινηθείς</p>
+        <p>Χρησιμοποίησε τα πλήκτρα βέλους για να κινηθείς</p>
         <p>Checkpoints που ολοκληρώθηκαν: {{ getCompletedCheckpointsCount() }}/{{ checkpoints.length }}</p>
       </div>
       
@@ -73,7 +73,9 @@
 @if (currentScreen === 'checkpoint') {
   <div class="screen">
     <div class="checkpoint-modal" [class.proverbs-modal]="currentCheckpoint?.type === 'proverbs'"
-    [class.timeline-modal]="currentCheckpoint?.type === 'timeline'">
+    [class.timeline-modal]="currentCheckpoint?.type === 'timeline'"
+    [class.quiz-modal]="currentCheckpoint?.type === 'multi-quiz'"
+    >
       <!-- Birthday Checkpoint -->
       @if (currentCheckpoint?.type === 'birthday') {
         <div>
@@ -97,7 +99,7 @@
       @if (currentCheckpoint?.type === 'find-item') {
         <div>
           <h2>Checkpoint: Βρες το αντικείμενο!</h2>
-          <p>Βρες το αντικείμενο που πάντα ξεχνάς να φέρεις... και το θυμάσαι το πρωί!</p>
+          <p>Βρες το αντικείμενο που συνήθως ξεχνάς να φέρεις... και το θυμάσαι το πρωί!</p>
           <div class="find-item-grid">
             @for (item of findItems; track item) {
               <div (click)="checkFindItem(item)">
@@ -117,12 +119,12 @@
           <p>Συμπλήρωσε τις λέξεις που λείπουν:</p>
 
           <div class="proverbs-list">
-            <p>1. Σαρανταπέντε Γιάννηδες ενός <input [(ngModel)]="proverbsAnswers.p1" class="small-input"> γνώση</p>
-            <p>2. Όχι Γιάννης, <input [(ngModel)]="proverbsAnswers.p2" class="small-input"></p>
-            <p>3. Γιάννης κερνάει και Γιάννης <input [(ngModel)]="proverbsAnswers.p3" class="small-input"></p>
-            <p>4. Ακόμα δεν τον είδαμε, Γιάννη τον <input [(ngModel)]="proverbsAnswers.p4" class="small-input"></p>
-            <p>5. Πότε ο Γιάννης δεν <input [(ngModel)]="proverbsAnswers.p5" class="small-input">, πότε ο κώλος του πονεί</p>
-            <p>6. Φοβάται ο Γιάννης το <input [(ngModel)]="proverbsAnswers.p6" class="small-input"> και το θεριό τον Γιάννη</p>
+            <p>1. Σαρανταπέντε Γιάννηδες ενός <input [(ngModel)]="proverbsAnswers.p1" class="small-input"> γνώση.</p>
+            <p>2. Όχι Γιάννης, <input [(ngModel)]="proverbsAnswers.p2" class="small-input">.</p>
+            <p>3. Γιάννης κερνάει και Γιάννης <input [(ngModel)]="proverbsAnswers.p3" class="small-input">.</p>
+            <p>4. Ακόμα δεν τον είδαμε, Γιάννη τον <input [(ngModel)]="proverbsAnswers.p4" class="small-input">.</p>
+            <p>5. Πότε ο Γιάννης δεν <input [(ngModel)]="proverbsAnswers.p5" class="small-input">, πότε ο κώλος του πονεί.</p>
+            <p>6. Φοβάται ο Γιάννης το <input [(ngModel)]="proverbsAnswers.p6" class="small-input"> και το <input [(ngModel)]="proverbsAnswers.p6" class="small-input"> τον Γιάννη.</p>
             <p>7. Σπίτι χωρίς Γιάννη, <input [(ngModel)]="proverbsAnswers.p7" class="small-input"> δεν κάνει.</p>
           </div>
 
@@ -229,7 +231,7 @@
 }
 
 <!-- Win Screen -->
-@if (currentScreen === 'win') {
+ @if (currentScreen === 'win') {
   <div class="screen win-letter-screen">
     <section class="cssletter">
       <div class="envelope" [class.active]="envelopeOpened">
@@ -247,14 +249,30 @@
       @if (letterVisible) {
         <div class="letters">
           <blockquote class="letter center">
-            <h2 style="margin-bottom: 1rem; color: #8B0000;">Συγχαρητήρια! Με βρήκες!</h2>
-            <p style="margin-bottom: 1rem;">Χρόνια Πολλά αγάπη μου! Να χαίρεσαι το όνομά σου!</p>
-            <p style="margin-bottom: 1rem; font-weight: bold;">Ο κωδικός είναι <span style="font-size: 1.5em; color: #8B0000;">030425</span></p>
-            <p style="margin-bottom: 1rem;">Ξέρεις τι είναι αυτό; Η επέτείος μας οπότε φρόντισε να το θυμάσαι!</p>
-            <cite style="margin-top: 1.5rem; font-size: 1.3em;">Σ' ευχαριστώ που είσαι εσύ! Σ' αγαπώ! ❤️</cite>
+            <h2 style="margin-bottom: 1rem; color: #8B0000;">Συγχαρητήρια!</h2>
+            <p>Χρόνια Πολλά αγάπη μου!</p>
+            <p style="margin-bottom: 1rem;">Να χαίρεσαι το όνομά σου!</p>
+            <p style="margin-bottom: 1rem; font-weight: bold;">Ο κωδικός είναι <span style="font-size: 1.2em; color: #8B0000;">030425</span></p>
+            <p>Ξέρεις τι είναι αυτό;</p>
+            <p>Η επέτείος μας οπότε φρόντισε να το θυμάσαι!</p>
+            <i style="margin-top: 1rem; font-size: 1.3em;">Σ' ευχαριστώ που είσαι εσύ!</i>
+            <i style="font-size: 1.3em;">Σ' αγαπώ! ❤️</i>
           </blockquote>
         </div>
       }
     </section>
   </div>
 }
+
+@if (showNotification) {
+  <div class="notification-overlay" (click)="closeNotification()">
+    <div class="notification-modal" [class.success]="notificationType === 'success'" 
+         [class.error]="notificationType === 'error'"
+         (click)="$event.stopPropagation()">
+      <h3>{{ notificationTitle }}</h3>
+      <p>{{ notificationMessage }}</p>
+      <button (click)="closeNotification()">OK</button>
+    </div>
+  </div>
+}
+

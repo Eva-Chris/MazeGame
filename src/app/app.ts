@@ -48,6 +48,11 @@ export class AppComponent implements OnInit {
   playerPos: Position = { x: 1, y: 1 };
   goalPos: Position = { x: 18, y: 13 };
   cellSize = 60; // Cell size for maze
+
+  showNotification = false;
+  notificationTitle = '';
+  notificationMessage = '';
+  notificationType: 'success' | 'error' = 'success';
   
   maze = [
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -87,7 +92,7 @@ export class AppComponent implements OnInit {
       correct: 1
     },
     {
-      q: "Πού πήγαμε στα γενέθλιά μου;",
+      q: "Που πήγαμε στα γενέθλιά μου;",
       options: ["Σφενδύλι", "Ρέθυμνο", "Αρχάνες", "Γούβες"],
       correct: 0
     },
@@ -102,8 +107,8 @@ export class AppComponent implements OnInit {
       correct: 3
     },
     {
-      q: ";",
-      options: ["Perfect", "Lover", "All of Me", "Your Song"],
+      q: "Ποιο βιβλίο διάβαζα στη δουλειά όταν ξεκινήσαμε να φλερτάρουμε;",
+      options: ["Γράμματα στη Μιλένα", "Στις όχθες του ποταμού Πιέδρα κάθισα κι έκλαψα", "Αιματοβαμμένος μεσημβρινός", "Εκατό Χρόνια Μοναξιά"],
       correct: 1
     }
   ];
@@ -154,9 +159,15 @@ export class AppComponent implements OnInit {
       this.locations.forEach(loc => {
         const marker = L.marker(loc.coords, { icon: heartIcon }).addTo(this.map);
         
+        marker.on('popupopen', () => {
+          const btn = document.getElementById('finish-map-btn');
+          if (btn) {
+            btn.onclick = () => this.completeCheckpoint();
+          }
+        });
+
         marker.on('click', () => {
           if (loc.correct) {
-            // Create the HTML content for the popup
             const popupContent = `
               <div style="text-align: center; font-family: sans-serif;">
                 <img src="${loc.image}" style="width: 200px; border-radius: 10px; margin-bottom: 8px;">
@@ -165,22 +176,26 @@ export class AppComponent implements OnInit {
               </div>
             `;
 
+            marker.unbindPopup();
             marker.bindPopup(popupContent).openPopup();
 
-            // Add a listener to the button inside the popup
-            setTimeout(() => {
-              const btn = document.getElementById('finish-map-btn');
-              if (btn) {
-                btn.onclick = () => this.completeCheckpoint();
-              }
-            }, 100);
-
           } else {
-            alert("Όχι εδώ! Ψάξε ξανά...");
+            this.notify('Λάθος τοποθεσία!', 'Όχι εδώ! Ψάξε ξανά...', 'error');
           }
         });
       });
     }, 100);
+  }
+
+  notify(title: string, message: string, type: 'success' | 'error' = 'success') {
+    this.notificationTitle = title;
+    this.notificationMessage = message;
+    this.notificationType = type;
+    this.showNotification = true;
+  }
+
+  closeNotification() {
+    this.showNotification = false;
   }
 
   moveNoButton() {
@@ -232,9 +247,9 @@ export class AppComponent implements OnInit {
       // Check for win
       if (newX === this.goalPos.x && newY === this.goalPos.y) {
         const allCompleted = this.checkpoints.every(cp => cp.completed);
-        // if (allCompleted) {
+        if (allCompleted) {
           this.currentScreen = 'win';
-        // }
+        }
       }
     }
   }
@@ -276,19 +291,40 @@ export class AppComponent implements OnInit {
 
   checkProverbs() {
     const a = this.proverbsAnswers;
-    const isCorrect = 
-      a.p1.toLowerCase().trim() === 'κοκόρου' &&
-      a.p2.toLowerCase().trim() === 'γιαννάκης' &&
-      a.p3.toLowerCase().trim() === 'πίνει' &&
-      a.p4.toLowerCase().trim() === 'βαφτίσαμε' &&
-      (a.p5.toLowerCase().trim() === 'μπορεί' || a.p5.toLowerCase().trim() === 'πονεί') &&
-      a.p6.toLowerCase().trim() === 'θεριό' &&
-      a.p7.toLowerCase().trim() === 'προκοπή';
+    const errors: string[] = [];
 
-    if (isCorrect) {
+    if (a.p1.toLowerCase().trim() !== 'κοκόρου') {
+      errors.push('1');
+    }
+    if (a.p2.toLowerCase().trim() !== 'γιαννάκης') {
+      errors.push('2');
+    }
+    if (a.p3.toLowerCase().trim() !== 'πίνει') {
+      errors.push('3');
+    }
+    if (a.p4.toLowerCase().trim() !== 'βαφτίσαμε') {
+      errors.push('4');
+    }
+    if (a.p5.toLowerCase().trim() !== 'μπορεί' && a.p5.toLowerCase().trim() !== 'πονεί') {
+      errors.push('5');
+    }
+    if (a.p6.toLowerCase().trim() !== 'θεριό') {
+      errors.push('6');
+    }
+    if (a.p7.toLowerCase().trim() !== 'προκοπή') {
+      errors.push('7');
+    }
+
+    if (errors.length === 0) {
       this.completeCheckpoint();
     } else {
-      this.proverbsError = 'Κάποια παροιμία δεν είναι σωστή! Δες το βίντεο για βοήθεια...';
+      if (errors.length === 1) {
+        this.proverbsError = `Η ${errors[0]} δεν είναι σωστή! Δες το βίντεο για βοήθεια...`;
+      } else if (errors.length === 2) {
+        this.proverbsError = `Οι ${errors.join(' και ')} δεν είναι σωστές! Δες το βίντεο για βοήθεια...`;
+      } else {
+        this.proverbsError = `Οι ${errors.slice(0, -1).join(', ')} και ${errors[errors.length - 1]} δεν είναι σωστές! Δες το βίντεο για βοήθεια...`;
+      }
     }
   }
 
@@ -345,13 +381,12 @@ export class AppComponent implements OnInit {
       if (this.currentQuestionIndex < this.quizQuestions.length - 1) {
         this.currentQuestionIndex++;
       } else {
-        alert("Συγχαρητήρια! Τα βρήκες όλα! ❤️");
         this.completeCheckpoint();
-        this.currentQuestionIndex = 0; // Reset for next time if needed
+        this.currentQuestionIndex = 0;
       }
     } else {
-      alert("Λάθος! Ξαναπροσπάθησε από την αρχή...");
-      this.currentQuestionIndex = 0; // Penalty: start over!
+      this.notify('Λάθος!', 'Ξαναπροσπάθησε από την αρχή...', 'error');
+      this.currentQuestionIndex = 0;
     }
   }
 }
